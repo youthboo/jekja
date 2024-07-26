@@ -1,0 +1,101 @@
+/* pages/HomePage.css */
+.home-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .message-input {
+    display: flex;
+    margin-top: 160px;
+    margin-bottom: 60px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .message-input input {
+    flex-grow: 1;
+    padding: 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    max-width: 900px;
+    height: 30px; 
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .message-input button {
+    padding: 20px 50px;
+    font-size: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+  
+  .suggestions {
+    display: grid;
+    
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    justify-items: center;
+  }
+  
+  .suggestion-button {
+    padding: 35px;
+    font-size: 30px;
+    width: 90%;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .sidebar button {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 15px;
+    margin: 5px 0;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+  
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  header .icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  header .icon img {
+    margin-left: 20px;
+    border-radius: 50%;
+  }
+  
+
+  
