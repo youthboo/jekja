@@ -18,9 +18,27 @@ const CategoryPage = () => {
 
   const letters = letterMap[id] || [];
 
-  const handleSend = () => {
-    console.log('Sending message:', message);
-    setMessage('');
+  const handleSend = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5001/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      const result = await response.json();
+      console.log('Message saved:', result);
+
+      setMessage('');
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
   };
 
   return (
