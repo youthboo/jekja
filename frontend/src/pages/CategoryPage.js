@@ -1,7 +1,8 @@
-// pages/CategoryPage.js
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './CategoryPage.css';
+import deleteIcon from '../assets/delete.png';
+import alertIcon from '../assets/bell.png'; 
 
 const CategoryPage = () => {
   const { id } = useParams();
@@ -12,8 +13,8 @@ const CategoryPage = () => {
     'ฌ-ถ': ['ฌ', 'ญ', 'ฎ', 'ฏ', 'ฐ', 'ฑ', 'ฒ', 'ณ', 'ด', 'ต', 'ถ'],
     'ท-ม': ['ท', 'ธ', 'น', 'บ', 'ป', 'ผ', 'ฝ', 'พ', 'ฟ', 'ภ', 'ม'],
     'ย-ฮ': ['ย', 'ร', 'ล', 'ว', 'ศ', 'ษ', 'ส', 'ห', 'ฬ', 'อ', 'ฮ'],
-    'สระ': ['ะ', 'า', 'ิ', 'ี', 'ึ', 'ื', 'เ', 'แ', 'โ', 'ุ', 'ั', 'ู', 'ำ'],
-    'วรรณยุกต์': ['่', '้', '๊', '๋', '็', '์', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+    'สระ': ['ะ', 'า', 'ิ', 'ี', 'ึ', 'ื', 'ุ', 'ู', 'เ', 'แ', 'โ', 'ั', 'ำ', 'ไ', 'ใ'],
+    'วรรณยุกต์': ['่', '้', '๊', '๋', '็', '์'],
   };
 
   const letters = letterMap[id] || [];
@@ -63,7 +64,17 @@ const CategoryPage = () => {
             {letter}
           </button>
         ))}
+        {/* เพิ่มไอคอน delete.png ต่อท้าย */}
+        <button 
+          key="delete" 
+          className="letter-button"
+          onClick={() => setMessage(prevMessage => prevMessage.slice(0, -1))} // ลบตัวอักษรตัวท้าย
+        >
+          <img src={deleteIcon} alt="delete" className="delete-icon" />
+        </button>
       </div>
+      {/* เพิ่มไอคอน alert ที่ด้านบนขวาของจอ */}
+      <img src={alertIcon} alt="alert" className="alert-icon" />
     </div>
   );
 };

@@ -3,6 +3,8 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin-bottom: 10px;
 }
 
 .app-container {
@@ -16,6 +18,46 @@ body, html {
   background-color: #f0f0f0;
 }
 
+/* เพิ่มส่วนนี้ใน App.css หรือไฟล์ CSS ที่เกี่ยวข้อง */
 
+.calibration-points {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.calibration-point {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: red;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calibration-point.yellow {
+  background-color: yellow;
+}
+
+.calibration-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+}
+
+.calibration-container button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
 
 
