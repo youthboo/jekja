@@ -80,3 +80,52 @@
     cursor: pointer;
   }
 
+
+/* เพิ่ม CSS สำหรับ Popup */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 600px; /* เพิ่มความกว้างของ popup */
+  width: 100%; /* ทำให้ขยายเต็มความกว้างของ viewport */
+  height: 40%;
+}
+
+.popup-content p {
+  font-size: 2em; 
+  margin-bottom: 30px;
+}
+
+.popup-content button {
+  margin: 50px;
+  padding: 40px 80px; /* ขยายปุ่มให้ใหญ่ขึ้น */
+  font-size: 1.2em; /* ขนาดตัวอักษรในปุ่มใหญ่ขึ้น */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.popup-content button:hover {
+  background: #8abee4; 
+  transform: scale(1.05); /* ขยายขนาดปุ่มเล็กน้อยเมื่อ hover */
+}
+
+.popup-content button:active {
+  background: #e0e0e0; /* สีพื้นหลังเมื่อกดปุ่ม */
+}
+
+

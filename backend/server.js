@@ -45,6 +45,34 @@ app.post('/messages', async (req, res) => {
   }
 });
 
+// Route สำหรับการส่งการแจ้งเตือนฉุกเฉิน
+app.post('/send-alert', async (req, res) => {
+  try {
+    const message = req.body.message || 'แจ้งเตือนฉุกเฉิน';
+
+    // ใช้ dynamic import() สำหรับ node-fetch
+    const fetch = (await import('node-fetch')).default;
+
+    // ส่งข้อความไปยัง LINE Notify
+    const lineNotifyToken = process.env.LINE_NOTIFY_TOKEN;
+    const lineNotifyUrl = 'https://notify-api.line.me/api/notify';
+
+    await fetch(lineNotifyUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${lineNotifyToken}`,
+      },
+      body: new URLSearchParams({ message }),
+    });
+
+    res.status(200).json({ message: 'Alert sent successfully' });
+  } catch (err) {
+    console.error('Error:', err); // แสดงข้อผิดพลาดในคอนโซล
+    res.status(400).json({ message: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
