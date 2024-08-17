@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const fs = require('fs');
+const https = require('https');
 const sequelize = require('./config/database');
 const Item = require('./models/Item');
 const { URLSearchParams } = require('url'); // Import URLSearchParams for form data
@@ -74,8 +76,16 @@ app.post('/send-alert', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const HOST = '0.0.0.0'; // รับฟังการเชื่อมต่อจากทุก IP Address
+
+// ตั้งค่า HTTPS
+const options = {
+  key: fs.readFileSync('/Users/aqwerrrx/Desktop/special1/backend/cert/rootCA-key.pem'),
+  cert: fs.readFileSync('/Users/aqwerrrx/Desktop/special1/backend/cert/rootCA.pem')
+};
+
+https.createServer(options, app).listen(PORT, HOST, () => {
+  console.log(`Server is running on https://${HOST}:${PORT}`);
 });
 
 sequelize.sync(); // ทำการซิงค์ฐานข้อมูล

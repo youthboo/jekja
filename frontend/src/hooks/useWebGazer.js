@@ -14,9 +14,9 @@ const useWebGazer = (onGaze) => {
       setWebgazerReady(true);
       
       // ตั้งค่าไม่ให้แสดงวิดีโอ, Face Overlay, และ Face Feedback Box
-      window.webgazer.showVideo(false);
-      window.webgazer.showFaceOverlay(false);
-      window.webgazer.showFaceFeedbackBox(false);
+      window.webgazer.showVideo(true);
+      window.webgazer.showFaceOverlay(true);
+      window.webgazer.showFaceFeedbackBox(true);
     } catch (error) {
       console.error('Failed to initialize webgazer:', error);
     }

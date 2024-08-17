@@ -1,12 +1,16 @@
 // pages/HomePage.js
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './HomePage.css';
 import alertIcon from '../assets/bell.png'; 
-import useWebGazer from '../hooks/useWebGazer'; // นำเข้าคอมโพเนนต์ useWebGazer
+import { useWebGazerContext } from '../hooks/WebGazerContext';
 
 const HomePage = () => {
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const { webgazerInstance } = useWebGazerContext();
+
+  const [gazeStartTime, setGazeStartTime] = useState(null);
+  const [gazedButton, setGazedButton] = useState(null);
 
   const suggestions = ['สวัสดี', 'หิวข้าว', 'เข้าห้องน้ำ', 'สบายดีไหม', 'ขอบคุณ', 'ขอโทษ', 'คิดถึง', 'รัก', 'ไปไหน'];
 
@@ -17,7 +21,7 @@ const HomePage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: message }),
+        body: JSON.stringify({ message }),
       });
       
       if (!response.ok) {
@@ -67,8 +71,9 @@ const HomePage = () => {
     if (data == null) return;
 
     const { x, y } = data;
-    // สมมติว่าคุณต้องการให้การ gaze บนปุ่มเพื่อส่งข้อความ
     const buttons = document.querySelectorAll('.suggestion-button');
+    let currentGazedButton = null;
+
     buttons.forEach(button => {
       const rect = button.getBoundingClientRect();
       if (
@@ -78,18 +83,39 @@ const HomePage = () => {
         y <= rect.bottom
       ) {
         button.classList.add('gazing');
-        setMessage(button.innerText);
+        currentGazedButton = button;
       } else {
         button.classList.remove('gazing');
       }
     });
-  }, []);
 
-  const { webgazerReady } = useWebGazer(handleGaze);
+    if (currentGazedButton) {
+      if (!gazedButton) {
+        setGazedButton(currentGazedButton);
+        setGazeStartTime(Date.now());
+      } else if (gazedButton === currentGazedButton && Date.now() - gazeStartTime > 1000) {
+        setMessage(currentGazedButton.innerText);
+        setGazedButton(null);
+        setGazeStartTime(null);
+      }
+    } else {
+      setGazedButton(null);
+      setGazeStartTime(null);
+    }
+  }, [gazedButton, gazeStartTime]);
 
-  if (!webgazerReady) {
-    return <div>กำลังโหลด WebGazer...</div>;
-  }
+  useEffect(() => {
+    const instance = webgazerInstance.current;
+    if (instance) {
+      instance.addGazeListener && instance.addGazeListener(handleGaze);
+    }
+
+    return () => {
+      if (instance) {
+        instance.removeGazeListener && instance.removeGazeListener(handleGaze);
+      }
+    };
+  }, [handleGaze, webgazerInstance]);
 
   return (
     <div className="home-page">

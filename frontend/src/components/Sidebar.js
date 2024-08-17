@@ -1,11 +1,38 @@
 // components/Sidebar.js
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useWebGazerContext } from '../hooks/WebGazerContext'; // ตรวจสอบเส้นทางให้ถูกต้อง
 import './Sidebar.css';
 import icon from '../assets/hospital.png';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { webgazerInstance } = useWebGazerContext();
+  const categoriesRef = useRef([]);
+
+  useEffect(() => {
+    const instance = webgazerInstance.current;
+    const currentRefs = categoriesRef.current; // เก็บค่าของ refs ลงในตัวแปร
+
+    if (instance) {
+      currentRefs.forEach((ref) => {
+        if (ref) {
+          instance.addMouseEventListeners(ref);
+        }
+      });
+    }
+
+    return () => {
+      if (instance) {
+        currentRefs.forEach((ref) => {
+          if (ref) {
+            instance.removeMouseEventListeners(ref);
+          }
+        });
+      }
+    };
+  }, [webgazerInstance]);
+
   const categories = [
     { id: 'ก-ซ', label: 'ก-ซ' },
     { id: 'ฌ-ถ', label: 'ฌ-ถ' },
@@ -25,11 +52,12 @@ const Sidebar = () => {
           <div className="logo-text">GazeTalk</div>
         </Link>
       </div>
-      {categories.map((category) => (
-        <Link 
-          key={category.id} 
+      {categories.map((category, index) => (
+        <Link
+          key={category.id}
           to={`/category/${category.id}`}
           className={`category-button ${location.pathname === `/category/${category.id}` ? 'active' : ''}`}
+          ref={(el) => (categoriesRef.current[index] = el)}
         >
           {category.label}
         </Link>

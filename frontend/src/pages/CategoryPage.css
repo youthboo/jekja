@@ -128,4 +128,23 @@
   background: #e0e0e0; /* สีพื้นหลังเมื่อกดปุ่ม */
 }
 
+.letter-button.gazing {
+  background-color: #cbf4b5;
+}
+
+/* CategoryPage.css */
+
+.calibration-point {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red; /* สีเริ่มต้น */
+  transform: translate(-50%, -50%);
+}
+
+.calibration-point.yellow {
+  background-color: yellow; /* สีที่เปลี่ยนหลังจากคลิกครบ 3 ครั้ง */
+}
+
 

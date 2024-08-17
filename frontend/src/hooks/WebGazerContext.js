@@ -1,3 +1,5 @@
+// hooks/WebGazerContext.js
+
 import React, { createContext, useContext, useState, useRef, useCallback, useEffect } from 'react';
 
 const WebGazerContext = createContext();
@@ -12,9 +14,9 @@ export const WebGazerProvider = ({ children }) => {
       webgazerInstance.current = window.webgazer;
       setWebgazerReady(true);
 
-      window.webgazer.showVideo(false);
-      window.webgazer.showFaceOverlay(false);
-      window.webgazer.showFaceFeedbackBox(false);
+      window.webgazer.showVideo(true);
+      window.webgazer.showFaceOverlay(true);
+      window.webgazer.showFaceFeedbackBox(true);
     } catch (error) {
       console.error('Failed to initialize webgazer:', error);
     }
