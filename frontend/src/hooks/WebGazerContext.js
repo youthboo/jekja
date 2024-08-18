@@ -14,6 +14,7 @@ export const WebGazerProvider = ({ children }) => {
       webgazerInstance.current = window.webgazer;
       setWebgazerReady(true);
 
+      // ตั้งค่าให้ซ่อน UI ของ WebGazer
       window.webgazer.showVideo(true);
       window.webgazer.showFaceOverlay(true);
       window.webgazer.showFaceFeedbackBox(true);

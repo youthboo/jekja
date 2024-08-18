@@ -7,12 +7,14 @@ import alertIcon from '../assets/bell.png';
 
 const CategoryPage = () => {
   const { id } = useParams();
-  const { webgazerInstance } = useWebGazerContext();
+  
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [calibrating, setCalibrating] = useState(false);
   const [calibrationPoints, setCalibrationPoints] = useState([]);
   const [clickCounts, setClickCounts] = useState(Array(19).fill(0));
+
+  const { webgazerInstance, webgazerReady } = useWebGazerContext();
   
   // ใช้ useRef เพื่อเก็บข้อมูลของปุ่มที่กำลังถูกมอง
   const [gazingAt, setGazingAt] = useState(null);
@@ -103,10 +105,10 @@ const CategoryPage = () => {
 
   const generateCalibrationPoints = () => {
     const positions = [
-      { x: 10, y: 20 }, { x: 10, y: 35 }, { x: 10, y: 50 }, { x: 10, y: 65 }, { x: 10, y: 80 },
-      { x: 10, y: 95 }, { x: 30, y: 50 }, { x: 50, y: 50 }, { x: 70, y: 50 }, { x: 90, y: 50 },
-      { x: 30, y: 65 }, { x: 50, y: 65 }, { x: 70, y: 65 }, { x: 90, y: 65 }, { x: 30, y: 85 },
-      { x: 50, y: 85 }, { x: 70, y: 85 }, { x: 95, y: 30 }, { x: 87, y: 3 },
+      { x: 10, y: 21 }, { x: 10, y: 36 }, { x: 10, y: 51 }, { x: 10, y: 66 }, { x: 10, y: 81 },
+      { x: 10, y: 96 }, { x: 28, y: 51 }, { x: 48, y: 51 }, { x: 68, y: 51 }, { x: 88, y: 51 },
+      { x: 28, y: 68 }, { x: 48, y: 68 }, { x: 68, y: 68 }, { x: 88, y: 68 }, { x: 28, y: 85 },
+      { x: 48, y: 85 }, { x: 68, y: 85 }, { x: 88, y: 85}, { x: 92, y: 32 }, { x: 95, y: 7 },
     ];
     return positions.map(pos => ({ x: `${pos.x}%`, y: `${pos.y}%`, color: 'red' }));
   };
@@ -136,11 +138,7 @@ const CategoryPage = () => {
   
     buttons.forEach(button => {
       const rect = button.getBoundingClientRect();
-      const isWithinButton =
-        x >= rect.left &&
-        x <= rect.right &&
-        y >= rect.top &&
-        y <= rect.bottom;
+      const isWithinButton = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   
       if (isWithinButton) {
         button.classList.add('gazing');
@@ -157,9 +155,14 @@ const CategoryPage = () => {
           clearTimeout(gazeTimeout.current);
         }
         gazeTimeout.current = setTimeout(() => {
-          gazedButton.click(); // Simulate click on the button
-          setGazingAt(null); // Reset gazingAt after click
-        }, 1000); // 1 second gaze time
+          console.log('Gaze click on:', gazedButton.textContent);
+          if (gazedButton.classList.contains('delete-button')) {
+            setMessage(prevMessage => prevMessage.slice(0, -1));
+          } else {
+            handleLetterClick(gazedButton.textContent);  // Updated here
+          }
+          setGazingAt(null);
+        }, 1000);
       }
     } else {
       setGazingAt(null);
@@ -170,19 +173,26 @@ const CategoryPage = () => {
     }
   }, [calibrating, gazingAt]);
   
-  
   useEffect(() => {
-    const instance = webgazerInstance.current;
-    if (instance) {
-      instance.addGazeListener && instance.addGazeListener(handleGaze);
+    if (webgazerReady && webgazerInstance.current) {
+      // Create a local variable to store the current webgazerInstance
+      const currentWebgazer = webgazerInstance.current;
+  
+      const gazeListener = (data, elapsedTime) => {
+        if (data == null) return;
+        handleGaze(data);
+      };
+  
+      currentWebgazer.setGazeListener(gazeListener);
+  
+      // Cleanup function uses the local variable
+      return () => {
+        if (webgazerReady && currentWebgazer) {
+          currentWebgazer.clearGazeListener();
+        }
+      };
     }
-
-    return () => {
-      if (instance) {
-        instance.removeGazeListener && instance.removeGazeListener(handleGaze);
-      }
-    };
-  }, [handleGaze, webgazerInstance]);
+  }, [handleGaze, webgazerReady, webgazerInstance]);
 
   const handleLetterClick = (letter) => {
     setMessage(prevMessage => prevMessage + letter);
@@ -216,7 +226,7 @@ const CategoryPage = () => {
         ))}
         <button 
           key="delete" 
-          className="letter-button"
+          className="letter-button delete-button"
           onClick={() => setMessage(prevMessage => prevMessage.slice(0, -1))}
         >
           <img src={deleteIcon} alt="delete" className="delete-icon" />
