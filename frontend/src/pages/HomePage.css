@@ -59,6 +59,11 @@
     display: flex;
     justify-content: center;
   }
+
+  .suggestion-button.gazing {
+    background-color: #cbf4b5; /* Light green background */
+    
+  }
   
   .sidebar {
     display: flex;

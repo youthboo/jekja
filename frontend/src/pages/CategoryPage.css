@@ -130,13 +130,12 @@
 
 .letter-button.gazing {
   background-color: #cbf4b5;
+  
 }
 
 .delete-button.gazing {
   border: 2px solid #007bff; /* or any other visual cue for gazing */
 }
-
-/* CategoryPage.css */
 
 .calibration-point {
   position: absolute;
