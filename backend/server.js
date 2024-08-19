@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const sequelize = require('./config/database');
 const Item = require('./models/Item');
 const { URLSearchParams } = require('url'); // Import URLSearchParams for form data
+const Word = require('./models/Word');
 
 dotenv.config();
 

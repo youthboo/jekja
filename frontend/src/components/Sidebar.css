@@ -72,3 +72,7 @@
     background-color: #42975e;
     font-weight: bold;
   }
+
+  .category-button.gazing {
+    background-color: #cbf4b5; /* Light green background */
+  }

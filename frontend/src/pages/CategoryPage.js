@@ -88,7 +88,7 @@ const CategoryPage = () => {
   const startCalibration = () => {
     if (webgazerInstance.current) {
       webgazerInstance.current.clearData();
-      webgazerInstance.current.showFaceOverlay(false);
+      webgazerInstance.current.showFaceOverlay(true);
       setCalibrating(true);
       setCalibrationPoints(generateCalibrationPoints());
       setClickCounts(Array(19).fill(0));

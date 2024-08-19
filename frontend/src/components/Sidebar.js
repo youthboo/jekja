@@ -1,7 +1,7 @@
-// components/Sidebar.js
+// components/Sidebar.js   **ยัง click ไม่ได้ !!!
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useWebGazerContext } from '../hooks/WebGazerContext'; // ตรวจสอบเส้นทางให้ถูกต้อง
+import { useWebGazerContext } from '../hooks/WebGazerContext'; 
 import './Sidebar.css';
 import icon from '../assets/hospital.png';
 
@@ -12,7 +12,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const instance = webgazerInstance.current;
-    const currentRefs = categoriesRef.current; // เก็บค่าของ refs ลงในตัวแปร
+    const currentRefs = categoriesRef.current; 
 
     if (instance) {
       currentRefs.forEach((ref) => {

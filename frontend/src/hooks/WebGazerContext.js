@@ -16,8 +16,14 @@ export const WebGazerProvider = ({ children }) => {
 
       // ตั้งค่าให้ซ่อน UI ของ WebGazer
       window.webgazer.showVideo(true);
-      window.webgazer.showFaceOverlay(true);
+      window.webgazer.showFaceOverlay(false);
       window.webgazer.showFaceFeedbackBox(true);
+
+      // ซ่อนผ่านการใช้ CSS หากยังไม่ถูกซ่อน
+      document.getElementById('webgazerVideoFeed').style.display = 'none';
+      document.getElementById('webgazerFaceOverlay').style.display = 'none';
+      document.getElementById('webgazerFaceFeedbackBox').style.display = 'none';
+      
     } catch (error) {
       console.error('Failed to initialize webgazer:', error);
     }
