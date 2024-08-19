@@ -31,7 +31,7 @@ const CategoryPage = () => {
 
   const letters = letterMap[id] || [];
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     try {
       const response = await fetch('http://127.0.0.1:5001/messages', {
         method: 'POST',
@@ -40,23 +40,24 @@ const CategoryPage = () => {
         },
         body: JSON.stringify({ message }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to send message');
       }
-
+  
       const result = await response.json();
       console.log('Message saved:', result);
-
+  
       setMessage('');
     } catch (error) {
       console.error('Failed to send message:', error);
     }
-  };
+  }, [message]); // แสดงว่า `message` เป็น dependency ของ `handleSend`
+  
 
-  const handleAlertClick = () => {
+  const handleAlertClick = useCallback(() => {
     setShowPopup(true);
-  };
+  }, []); // ไม่มี dependencies
 
   const handlePopupClose = () => {
     setShowPopup(false);
@@ -133,7 +134,7 @@ const CategoryPage = () => {
     if (data == null || calibrating) return;
   
     const { x, y } = data;
-    const buttons = document.querySelectorAll('.letter-button');
+    const buttons = document.querySelectorAll('.letter-button, .message-input button, .icon-bell'); 
     let gazedButton = null;
   
     buttons.forEach(button => {
@@ -158,8 +159,12 @@ const CategoryPage = () => {
           console.log('Gaze click on:', gazedButton.textContent);
           if (gazedButton.classList.contains('delete-button')) {
             setMessage(prevMessage => prevMessage.slice(0, -1));
+          } else if (gazedButton.classList.contains('icon-bell')) {
+            handleAlertClick();  // เรียกใช้ฟังก์ชัน handleAlertClick
+          } else if (gazedButton.textContent === 'ตกลง') {
+            handleSend();  // เรียกใช้ฟังก์ชัน handleSend
           } else {
-            handleLetterClick(gazedButton.textContent);  // Updated here
+            handleLetterClick(gazedButton.textContent);
           }
           setGazingAt(null);
         }, 1000);
@@ -171,7 +176,8 @@ const CategoryPage = () => {
         gazeTimeout.current = null;
       }
     }
-  }, [calibrating, gazingAt]);
+  }, [calibrating, gazingAt, handleSend, handleAlertClick]);
+  
   
   useEffect(() => {
     if (webgazerReady && webgazerInstance.current) {
@@ -235,7 +241,7 @@ const CategoryPage = () => {
       <img 
         src={alertIcon} 
         alt="alert" 
-        className="alert-icon" 
+        className="alert-icon icon-bell" 
         onClick={handleAlertClick} 
       />
       {showPopup && (

@@ -16,7 +16,7 @@ const HomePage = () => {
 
   const suggestions = ['สวัสดี', 'หิวข้าว', 'เข้าห้องน้ำ', 'สบายดีไหม', 'ขอบคุณ', 'ขอโทษ', 'คิดถึง', 'รัก', 'ไปไหน'];
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     try {
       const response = await fetch('http://127.0.0.1:5001/messages', {
         method: 'POST',
@@ -36,11 +36,12 @@ const HomePage = () => {
     } catch (error) {
       console.error('Failed to send message:', error);
     }
-  };
+  }, [message]);
 
-  const handleAlertClick = () => {
+  const handleAlertClick = useCallback(() => {
     setShowPopup(true);
-  };
+  }, []); // ไม่มี dependencies
+  
 
   const handlePopupClose = () => {
     setShowPopup(false);
@@ -119,7 +120,7 @@ const HomePage = () => {
     if (data == null || calibrating) return;
   
     const { x, y } = data;
-    const buttons = document.querySelectorAll('.suggestion-button');
+    const buttons = document.querySelectorAll('.suggestion-button, .message-input button, .icon-bell');
     let gazedButton = null;
   
     buttons.forEach(button => {
@@ -141,9 +142,14 @@ const HomePage = () => {
           clearTimeout(gazeTimeout.current);
         }
         gazeTimeout.current = setTimeout(() => {
-          console.log('Gaze click on:', gazedButton.textContent);
-          setMessage(gazedButton.textContent);
-          gazedButton.click();
+          console.log('Gaze click on:', gazedButton.textContent || gazedButton.alt);
+          if (gazedButton.classList.contains('icon-bell')) {
+            handleAlertClick();  // เรียกใช้ฟังก์ชัน handleAlertClick
+          } else if (gazedButton.textContent === 'ตกลง') {
+            handleSend();  // เรียกใช้ฟังก์ชัน handleSend
+          } else {
+            setMessage(gazedButton.textContent);
+          }
           setGazingAt(null);
         }, 1000);
       }
@@ -154,7 +160,8 @@ const HomePage = () => {
         gazeTimeout.current = null;
       }
     }
-  }, [calibrating, gazingAt]);
+  }, [calibrating, gazingAt, handleSend, handleAlertClick]); // อัปเดต dependencies
+  
 
   useEffect(() => {
     if (webgazerReady && webgazerInstance.current) {
@@ -206,9 +213,10 @@ const HomePage = () => {
       <img 
         src={alertIcon} 
         alt="alert" 
-        className="alert-icon" 
+        className="alert-icon icon-bell" 
         onClick={handleAlertClick} 
       />
+
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
