@@ -15,7 +15,7 @@ body, html {
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
 }
 
 /* เพิ่มส่วนนี้ใน App.css หรือไฟล์ CSS ที่เกี่ยวข้อง */

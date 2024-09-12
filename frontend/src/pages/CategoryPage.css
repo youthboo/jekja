@@ -1,85 +1,117 @@
 /* pages/CategoryPage.css */
 .category-page {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    
-  }
-  
-  .letter-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .letter-button {
-    padding: 35px;
-    font-size: 30px;
-    width: 90%;
-    background-color: #ffffff;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-  }
-
-  .letter-button:hover {
-    background-color: #cbf4b5; /* สีพื้นหลังเมื่อ hover */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
 }
 
-  .delete-icon {
-    width: 65px; /* ปรับขนาดไอคอนตามต้องการ */
-    height: 50px;
-  }
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  justify-content: center;
+}
 
-  .message-input {
-    display: flex;
-    margin-top: 125px;
-    margin-bottom: 60px;
-    align-items: center;
-    justify-content: center;
-  }
+.letter-button {
+  position: relative;
+  padding: 35px;
+  font-size: 35px;
+  width: 100%;
+  height: 130px; /* ปรับขนาดความสูงตามที่ต้องการ */
+  background-color: #D8EEEB;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
 
-  .message-input input {
-    flex-grow: 1;
-    padding: 15px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    max-width: 900px;
-    height: 30px; 
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  
-  .message-input button {
-    padding: 20px 50px;
-    font-size: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    margin-left: 20px;
-  }
+.letter-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%; /* เริ่มจากด้านซ้ายสุด */
+  height: 100%;
+  width: 100%;
+  background-color: rgba(76, 175, 127, 0.5); /* สีเขียวโปร่งใส */
+  animation: none; /* เริ่มต้นไม่ต้องการ animation */
+  z-index: 1;
+  pointer-events: none; /* ป้องกันไม่ให้แถบโหลดบังการคลิก */
+}
 
-  .message-input button:hover {
-    background-color: #4bc00b;
+@keyframes load {
+  from {
+    left: -100%;
   }
-
-  .alert-icon {
-    position: absolute;
-    top: 20px; /* กำหนดระยะจากด้านบน */
-    right: 40px; /* กำหนดระยะจากด้านขวา */
-    width: 70px; /* ปรับขนาดไอคอนตามต้องการ */
-    height: 70px;
-    cursor: pointer;
+  to {
+    left: 0;
   }
+}
 
+.letter-button.gazing::before,
+.letter-button:hover::before {
+  animation: load 3s linear forwards; /* ใช้ animation เคลื่อนที่ */
+}
+
+.letter-button > span {
+  position: relative;
+  z-index: 2;
+}
+
+.delete-icon {
+  width: 65px; 
+  height: 50px;
+}
+
+.message-input {
+  display: flex;
+  margin-top: 90px;
+  margin-bottom: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-input input {
+  flex-grow: 1;
+  padding: 15px;
+  font-size: 18px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  max-width: 900px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.message-input button {
+  padding: 20px 20px;
+  font-size: 25px;
+  background-color: #009688;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 20px;
+  width: 25%; 
+  height: 100%; 
+}
+
+.message-input button:hover {
+  background-color: #4DB6AC;
+}
+
+.alert-icon {
+  position: absolute;
+  top: 20px; /* กำหนดระยะจากด้านบน */
+  right: 40px; /* กำหนดระยะจากด้านขวา */
+  width: 70px; /* ปรับขนาดไอคอนตามต้องการ */
+  height: 70px;
+  cursor: pointer;
+}
 
 /* เพิ่ม CSS สำหรับ Popup */
 .popup {
@@ -99,55 +131,33 @@
   padding: 30px;
   border-radius: 10px;
   text-align: center;
-  max-width: 600px; /* เพิ่มความกว้างของ popup */
-  width: 100%; /* ทำให้ขยายเต็มความกว้างของ viewport */
+  max-width: 600px; 
+  width: 100%;
   height: 40%;
 }
 
 .popup-content p {
-  font-size: 2em; 
+  font-size: 2em;
   margin-bottom: 30px;
 }
 
 .popup-content button {
   margin: 50px;
-  padding: 40px 80px; /* ขยายปุ่มให้ใหญ่ขึ้น */
-  font-size: 1.2em; /* ขนาดตัวอักษรในปุ่มใหญ่ขึ้น */
+  padding: 40px 20px; 
+  font-size: 1.2em; 
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
+  width: 30%; 
+  height: 100px; 
 }
 
 .popup-content button:hover {
-  background: #8abee4; 
+  background: #8abee4;
   transform: scale(1.05); /* ขยายขนาดปุ่มเล็กน้อยเมื่อ hover */
 }
 
 .popup-content button:active {
-  background: #e0e0e0; /* สีพื้นหลังเมื่อกดปุ่ม */
+  background: #e0e0e0; 
 }
-
-.letter-button.gazing {
-  background-color: #cbf4b5;
-  
-}
-
-.delete-button.gazing {
-  border: 2px solid #007bff; /* or any other visual cue for gazing */
-}
-
-.calibration-point {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: red; /* สีเริ่มต้น */
-  transform: translate(-50%, -50%);
-}
-
-.calibration-point.yellow {
-  background-color: yellow; /* สีที่เปลี่ยนหลังจากคลิกครบ 3 ครั้ง */
-}
-
-

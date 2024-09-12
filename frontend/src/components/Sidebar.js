@@ -1,43 +1,15 @@
-// components/Sidebar.js   **ยัง click ไม่ได้ !!!
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useWebGazerContext } from '../hooks/WebGazerContext'; 
 import './Sidebar.css';
 import icon from '../assets/hospital.png';
 
 const Sidebar = () => {
   const location = useLocation();
-  const { webgazerInstance } = useWebGazerContext();
   const categoriesRef = useRef([]);
 
-  useEffect(() => {
-    const instance = webgazerInstance.current;
-    const currentRefs = categoriesRef.current; 
-
-    if (instance) {
-      currentRefs.forEach((ref) => {
-        if (ref) {
-          instance.addMouseEventListeners(ref);
-        }
-      });
-    }
-
-    return () => {
-      if (instance) {
-        currentRefs.forEach((ref) => {
-          if (ref) {
-            instance.removeMouseEventListeners(ref);
-          }
-        });
-      }
-    };
-  }, [webgazerInstance]);
-
   const categories = [
-    { id: 'ก-ซ', label: 'ก-ซ' },
-    { id: 'ฌ-ถ', label: 'ฌ-ถ' },
-    { id: 'ท-ม', label: 'ท-ม' },
-    { id: 'ย-ฮ', label: 'ย-ฮ' },
+    { id: 'หน้าหลัก', label: 'หน้าหลัก' },
+    { id: 'พยัญชนะ', label: 'พยัญชนะ' },
     { id: 'สระ', label: 'สระ' },
     { id: 'วรรณยุกต์', label: 'วรรณยุกต์' },
   ];
@@ -57,13 +29,19 @@ const Sidebar = () => {
           key={category.id}
           to={`/category/${category.id}`}
           className={`category-button ${location.pathname === `/category/${category.id}` ? 'active' : ''}`}
-          ref={(el) => (categoriesRef.current[index] = el)}
+          ref={(el) => {
+            if (el) {
+              categoriesRef.current[index] = el;
+            }
+          }}
         >
+          <div className="loading-bar"></div> 
           {category.label}
         </Link>
       ))}
     </div>
   );
 };
+
 
 export default Sidebar;
